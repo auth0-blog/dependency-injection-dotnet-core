@@ -1,6 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using OrderManagement.Managers;
+﻿using Microsoft.AspNetCore.Mvc;
+using OrderManagement.Interfaces;
 using OrderManagement.Models;
 
 namespace OrderManagement.Controllers
@@ -9,20 +8,17 @@ namespace OrderManagement.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult Get()
+        private IOrderManager orderManager;
+
+        public OrderController(IOrderManager orderMngr)
         {
-            return Ok("Welcome! Use POST to place an order.");
+            orderManager = orderMngr;
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Order order)
+        public ActionResult<string> Post(Order order)
         {
-            var orderManager = new OrderManager();
-
-            await orderManager.Transmit(order);
-
-            return Ok();
+            return Ok(orderManager.Transmit(order));
         }
     }
 }

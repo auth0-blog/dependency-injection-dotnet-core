@@ -1,13 +1,13 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using OrderManagement.Interfaces;
 using OrderManagement.Models;
 
-namespace OrderManagement.Managers
+namespace OrderManagement
 {
-    public class OrderSender
+    public class HttpOrderSender : IOrderSender
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
@@ -16,8 +16,7 @@ namespace OrderManagement.Managers
             var jsonOrder = JsonSerializer.Serialize<Order>(order);
             var stringContent = new StringContent(jsonOrder, UnicodeEncoding.UTF8, "application/json");
 
-            // The following statement will raise an exception. This is just an example...
-            var response = await httpClient.PostAsync("https://mymicroservice/myendpoint", stringContent);
+            var response = await httpClient.PostAsync("https://mymicroservice.lan/myendpoint", stringContent);
 
             return response.Content.ReadAsStringAsync().Result;
 
