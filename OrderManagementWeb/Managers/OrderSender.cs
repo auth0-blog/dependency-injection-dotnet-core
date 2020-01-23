@@ -16,6 +16,7 @@ namespace OrderManagement
             var jsonOrder = JsonSerializer.Serialize<Order>(order);
             var stringContent = new StringContent(jsonOrder, UnicodeEncoding.UTF8, "application/json");
 
+            //This statement calls a not existing URL
             var response = await httpClient.PostAsync("https://mymicroservice.lan/myendpoint", stringContent);
 
             return response.Content.ReadAsStringAsync().Result;
